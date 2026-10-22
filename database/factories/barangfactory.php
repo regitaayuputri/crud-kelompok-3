@@ -2,46 +2,30 @@
 
 namespace Database\Factories;
 
+use App\Models\Barang;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends Factory<Barang>
+ */
 class BarangFactory extends Factory
 {
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
     public function definition(): array
     {
+
         return [
-            'kode_barang' => 'LAB-' . fake()->unique()->numerify('####'),
-            'nama_barang' => fake()->randomElement([
-                'Mikroskop',
-                'Gelas Ukur',
-                'Tabung Reaksi',
-                'Termometer',
-                'Neraca Digital',
-                'Buret',
-                'Pipet Tetes',
-                'Gelas Beaker',
-                'Statif',
-                'Penjepit Tabung',
-            ]),
-            'kategori' => fake()->randomElement([
-                'Alat Ukur',
-                'Alat Optik',
-                'Alat Gelas',
-                'Alat Keselamatan',
-            ]),
-            'lokasi' => fake()->randomElement([
-                'Lemari A',
-                'Lemari B',
-                'Rak 1',
-                'Rak 2',
-                'Meja Laboratorium',
-            ]),
-            'jumlah' => fake()->numberBetween(1, 50),
-            'kondisi' => fake()->randomElement([
-                'Baik',
-                'Perlu Perbaikan',
-                'Rusak',
-            ]),
-            'keterangan' => fake()->optional()->sentence(),
+            'kode_barang' => fake()->unique()->numerify('BRG-####'),
+            'nama_barang' => fake()->words(2, true),
+            'kategori' => fake()->randomElement(['Elektronik', 'ATK', 'Perabot']),
+            'lokasi' => fake()->randomElement(['Gudang', 'Ruang Kelas', 'Kantor']),
+            'jumlah' => fake()->numberBetween(1, 100),
+            'kondisi' => fake()->randomElement(['Baik', 'Rusak']),
+            'keterangan' => fake()->sentence(),
         ];
     }
 }
