@@ -1,14 +1,55 @@
-@extends('layouts')
-
-@section('title', 'Tambah Barang')
-
-@section('content')
-<div class="card">
-    <h2>Tambah Barang Laboratorium</h2>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tambah Barang</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f1f5f2;
+            padding: 30px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+        }
+        h2 { color: #52745c; }
+        label {
+            display: block;
+            margin-top: 15px;
+        }
+        input, select, textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 10px;
+            margin-top: 6px;
+            border: 1px solid #ccd8ce;
+            border-radius: 5px;
+        }
+        button, .kembali {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            background: #52745c;
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .error { color: #c0392b; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Tambah Data Barang</h2>
 
     @if ($errors->any())
         <div class="error">
-            <p>Periksa kembali data yang dimasukkan:</p>
             <ul>
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -17,64 +58,43 @@
         </div>
     @endif
 
-    <form action="{{ route('barangs.store') }}" method="POST">
+    <form action="{{ route('barang.store') }}" method="POST">
         @csrf
 
-        <label for="kode_barang">Kode Barang</label>
-        <input id="kode_barang" name="kode_barang"
+        <label>Kode Barang</label>
+        <input type="text" name="kode_barang"
                value="{{ old('kode_barang') }}" required>
-        @error('kode_barang')
-            <div class="error">{{ $message }}</div>
-        @enderror
 
-        <label for="nama_barang">Nama Barang</label>
-        <input id="nama_barang" name="nama_barang"
+        <label>Nama Barang</label>
+        <input type="text" name="nama_barang"
                value="{{ old('nama_barang') }}" required>
-        @error('nama_barang')
-            <div class="error">{{ $message }}</div>
-        @enderror
 
-        <label for="kategori">Kategori</label>
-        <select id="kategori" name="kategori" required>
-            <option value="">-- Pilih Kategori --</option>
-            @foreach (['Alat Ukur', 'Alat Optik', 'Alat Gelas', 'Alat Keselamatan', 'Lainnya'] as $kategori)
-                <option value="{{ $kategori }}"
-                    @selected(old('kategori') == $kategori)>
-                    {{ $kategori }}
-                </option>
-            @endforeach
-        </select>
+        <label>Kategori</label>
+        <input type="text" name="kategori"
+               value="{{ old('kategori') }}" required>
 
-        <label for="lokasi">Lokasi Penyimpanan</label>
-        <input id="lokasi" name="lokasi"
+        <label>Lokasi</label>
+        <input type="text" name="lokasi"
                value="{{ old('lokasi') }}" required>
 
-        <label for="jumlah">Jumlah Barang</label>
-        <input id="jumlah" type="number" min="0" name="jumlah"
-               value="{{ old('jumlah', 1) }}" required>
+        <label>Jumlah</label>
+        <input type="number" name="jumlah" min="0"
+               value="{{ old('jumlah', 0) }}" required>
 
-        <label for="kondisi">Kondisi Barang</label>
-        <select id="kondisi" name="kondisi" required>
+        <label>Kondisi</label>
+        <select name="kondisi" required>
             <option value="">-- Pilih Kondisi --</option>
-            @foreach (['Baik', 'Perlu Perbaikan', 'Rusak'] as $kondisi)
-                <option value="{{ $kondisi }}"
-                    @selected(old('kondisi') == $kondisi)>
-                    {{ $kondisi }}
-                </option>
-            @endforeach
+            <option value="Baik">Baik</option>
+            <option value="Rusak Ringan">Rusak Ringan</option>
+            <option value="Rusak Berat">Rusak Berat</option>
         </select>
 
-        <label for="keterangan">Keterangan (opsional)</label>
-        <textarea id="keterangan" name="keterangan"
-                  rows="3">{{ old('keterangan') }}</textarea>
+        <label>Keterangan</label>
+        <textarea name="keterangan" rows="3">{{ old('keterangan') }}</textarea>
 
-        <br><br>
-        <button type="submit" class="btn primary">
-            Simpan Barang
-        </button>
-        <a href="{{ route('barangs.index') }}" class="btn secondary">
-            Kembali
-        </a>
+        <button type="submit">Simpan Barang</button>
+        <a href="{{ route('barang.index') }}" class="kembali">Kembali</a>
     </form>
 </div>
-@endsection
+</body>
+</html>
