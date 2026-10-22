@@ -8,8 +8,7 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        $this->call([
-            BarangSeeder::class,
-        ]);
+    
+        \App\Models\Barang::factory()->count(25)->create();
     }
 }

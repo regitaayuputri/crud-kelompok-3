@@ -2,30 +2,33 @@
 
 namespace Database\Factories;
 
-use App\Models\Barang;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends Factory<Barang>
- */
 class BarangFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
     public function definition(): array
     {
+        // Daftar nama barang lab agar diacak otomatis secara lokal
+        $barangLab = [
+            'Tabung Reaksi', 'Gelas Ukur 100ml', 'Erlenmeyer 250ml', 'Pipet Tetes',
+            'Mikroskop Binokuler', 'Cawan Petri', 'Bunsen Burner', 'Kaki Tiga',
+            'Kawat Kasa', 'Rak Tabung Reaksi', 'Labu Ukur 500ml', 'Corong Kaca',
+            'Spatula Logam', 'Batang Pengaduk', 'Termometer Raksa', 'pH Meter Digital',
+            'Buret 50ml', 'Statif dan Klem', 'Mortar dan Alu', 'Botol Semprot'
+        ];
+
+        $kategori = ['Kaca', 'Alat', 'Besi', 'Kayu', 'Alat Ukur', 'Plastik'];
+        $lokasi = ['Lemari A', 'Lemari B', 'Lemari C', 'Meja Utama', 'Meja Praktikum'];
+        $kondisi = ['Baik', 'Rusak Ringan'];
 
         return [
-            'kode_barang' => fake()->unique()->numerify('BRG-####'),
-            'nama_barang' => fake()->words(2, true),
-            'kategori' => fake()->randomElement(['Elektronik', 'ATK', 'Perabot']),
-            'lokasi' => fake()->randomElement(['Gudang', 'Ruang Kelas', 'Kantor']),
-            'jumlah' => fake()->numberBetween(1, 100),
-            'kondisi' => fake()->randomElement(['Baik', 'Rusak']),
-            'keterangan' => fake()->sentence(),
+            'kode' => 'LAB' . $this->faker->unique()->numberBetween(100, 999),
+            'nama_barang' => $this->faker->randomElement($barangLab),
+            'kategori' => $this->faker->randomElement($kategori),
+            'lokasi' => $this->faker->randomElement($lokasi),
+            'jumlah' => $this->faker->numberBetween(1, 50), 
+            'kondisi' => $this->faker->randomElement($kondisi),
+            'keterangan' => 'Alat keperluan praktikum lab.',
         ];
     }
 }
