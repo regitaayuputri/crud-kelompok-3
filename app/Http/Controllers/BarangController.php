@@ -11,7 +11,7 @@ class BarangController extends Controller
      */
     public function index()
     {
-        $barangs = Barang::latest()->get();
+        $barangs = Barang::all();
         return view('barang.index',compact('barangs'));
     }
 
@@ -28,7 +28,7 @@ class BarangController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->validate([
+        $request->validate([
             'kode_barang' => 'required|
             string|max:225|unique:barangs,kode_barang',
             'nama_barang' => 'required|
@@ -44,7 +44,7 @@ class BarangController extends Controller
             'keterangan' => 'nullabel|
             string',
         ]);
-        Barang::create($data);
+        Barang::create($request->all());
         return
         redirect()->route('barang.index')
              ->with('succes','Data barang berhasil ditambahkan.');
@@ -71,25 +71,16 @@ class BarangController extends Controller
      */
     public function update(Request $request, Barang $barang)
     {
-         $data = $request->validate([
-            'kode_barang' => ['required',
-            'string','max:225',
-            Rule::unique('barangs','kode_barang')->ignore($barang->id),
-            ],
-            'nama_barang' => 'required|
-            string|max:225',
-            'kategori' => 'required|
-            string|max:225',
-            'lokasi' => 'required|
-            string|max:225',
-            'jumlah' => 'integer|
-            string|min:0',
-            'kondisi' => 'required|
-            string|max:225',
-            'keterangan' => 'nullabel|
-            string',
+         $request->validate([
+            'kode_barang' => 'required| unique:barangs,kode_barang,' .$barang->id,
+            'nama_barang' => 'required',
+            'kategori' => 'required',
+            'lokasi' => 'required',
+            'jumlah' => 'integer',
+            'kondisi' => 'required',
+            'keterangan' => 'nullabel',
         ]);
-        $barang->update($data);
+        $barang->update($request->all());
         return
         redirect()->route('barang.index')
                   ->with('succes','Data barang berhasil diperbaharui.');
