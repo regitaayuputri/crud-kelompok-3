@@ -2,13 +2,16 @@
 
 namespace Database\Seeders;
 
-use App\Models\Barang;
 use Illuminate\Database\Seeder;
+use App\Models\Barang;
 
 class BarangSeeder extends Seeder
 {
-    public function run(): void
-    {
-        Barang::factory()->count(20)->create();
-    }
+    /**
+     * Run the database seeds.
+     */
+        public function run(): void
+{
+    Barang::factory()->count(20)->create();
+}
 }
