@@ -1,77 +1,93 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\Barang;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 
 class BarangController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
-        $barangs = Barang::latest()->get();
-
-        return view('barangs.index', compact('barangs'));
+        $barangs = Barang::all();
+        return view('barang.index',compact('barangs'));
     }
 
+    /**
+     * Show the form for creating a new resource.
+     */
     public function create()
     {
-        return view('barangs.create');
+        return view('barang.create');
     }
 
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'kode_barang' => 'required|string|max:255|unique:barangs,kode_barang',
-            'nama_barang' => 'required|string|max:255',
-            'kategori' => 'required|string|max:255',
-            'lokasi' => 'required|string|max:255',
-            'jumlah' => 'required|integer|min:0',
-            'kondisi' => 'required|in:Baik,Perlu Perbaikan,Rusak',
-            'keterangan' => 'nullable|string',
+        $request->validate([
+            'kode_barang' => 'required| unique:barangs,kode_barang',
+            'nama_barang' => 'required',
+            'kategori' => 'required',
+            'lokasi' => 'required',
+            'jumlah' => 'required|integer',
+            'kondisi' => 'required',
+            'keterangan' => 'nullable',
         ]);
+        Barang::create($request->all());
 
-        Barang::create($validated);
-
-        return redirect()->route('barangs.index')
-            ->with('success', 'Barang berhasil ditambahkan!');
+        return redirect()->route('barang.index')
+            ->with('success', 'Barang Sukses Ditambahkan');
     }
 
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
     public function edit(Barang $barang)
     {
-        return view('barangs.edit', compact('barang'));
+        return view('barang.edit', compact('barang'));
     }
 
+    /**
+     * Update the specified resource in storage.
+     */
     public function update(Request $request, Barang $barang)
     {
-        $validated = $request->validate([
-            'kode_barang' => [
-                'required',
-                'string',
-                'max:255',
-                Rule::unique('barangs', 'kode_barang')
-                    ->ignore($barang->id),
-            ],
-            'nama_barang' => 'required|string|max:255',
-            'kategori' => 'required|string|max:255',
-            'lokasi' => 'required|string|max:255',
-            'jumlah' => 'required|integer|min:0',
-            'kondisi' => 'required|in:Baik,Perlu Perbaikan,Rusak',
-            'keterangan' => 'nullable|string',
+        $request->validate([
+            'kode_barang' => 'required|unique:barangs,kode_barang,' . $barang->id,
+            'nama_barang' => 'required',
+            'kategori' => 'required',
+            'lokasi' => 'required',
+            'jumlah' => 'required|integer',
+            'kondisi' => 'required',
+            'keterangan' => 'nullable',
         ]);
 
-        $barang->update($validated);
+        $barang->update($request->all());
 
-        return redirect()->route('barangs.index')
-            ->with('success', 'Barang berhasil diperbarui!');
+        return redirect()->route('barang.index')
+            ->with('success', 'Barang Sukses Diperbarui');
     }
 
+    /**
+     * Remove the specified resource from storage.
+     */
     public function destroy(Barang $barang)
     {
         $barang->delete();
 
-        return redirect()->route('barangs.index')
-            ->with('success', 'Barang berhasil dihapus!');
+        return redirect()->route('barang.index')
+            ->with('success', 'Barang Sukses Dihapus');
     }
 }
