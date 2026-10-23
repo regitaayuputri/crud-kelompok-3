@@ -28,7 +28,7 @@ class BarangController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $request->all([
             'kode_barang' => 'required| unique:barangs,kode_barang',
             'nama_barang' => 'required',
             'kategori' => 'required',
@@ -37,8 +37,8 @@ class BarangController extends Controller
             'kondisi' => 'required',
             'keterangan' => 'nullable',
         ]);
-        Barang::create($request->all());
-
+        $data = $request->all();
+        $data['kode'] = '';
         return redirect()->route('barang.index')
             ->with('success', 'Barang Sukses Ditambahkan');
     }
